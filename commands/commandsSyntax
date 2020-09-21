@@ -1,0 +1,4 @@
+!add <commandName> <commandText>
+!change <commandName> <newCommandText>
+!delete <commandName>
+!commands
