@@ -4,6 +4,7 @@ const options = {
     },
     connection: {
         reconnect: true,
+        port: 8000,
     },
     identity: {
         //8sxutt52sx8et1dfyj08elhlde1idn
@@ -15,7 +16,9 @@ const options = {
         'psihoz_ykt',
         "ariywariy",
         "nobodydie_", "borodatiyky", "bedegrave",
-        "hotmandogy"
+        "hotmandogy",
+        "7magmaker7",
+
     ],
 };
 module.exports = options;
