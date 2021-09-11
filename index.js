@@ -2,7 +2,13 @@ const tmi = require('tmi.js');
 const commandsHandler = require('./commandsHandler')
 let options = require('./bot_options')
 let chat = [];
+# port (as described above) and host are both wrong
+const host = 'localhost';
+const port = 3000;
 
+# use alternate localhost and the port Heroku assigns to $PORT
+const host = '0.0.0.0';
+const port = process.env.PORT || 3000;
 const client = new tmi.client(options);
 client.connect()
 client.on('whisper', async (channel, userstate, message, self) => {
