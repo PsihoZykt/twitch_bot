@@ -4,7 +4,7 @@ const options = {
     },
     connection: {
         reconnect: true,
-        port: 8000,
+        port: process.env.PORT || 3000,
     },
     identity: {
         //8sxutt52sx8et1dfyj08elhlde1idn
