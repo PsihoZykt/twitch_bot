@@ -79,7 +79,7 @@ let commandsHandler = {
                 default:
                     if (commandsFileHandler.findCommandInFile(type)) {
                         console.log("Non privelegue, find command")
-                        return this.findCommand(message);
+                            return this.findCommand(message);
                     } else {
                         return getChannelPointsReward(channel, userstate, message)
                     }
@@ -135,6 +135,7 @@ let commandsHandler = {
         if (regResult !== null) {
             username = regResult[0];
         }
+
         let command = commandsFileHandler.findCommandInFile(commandName);
         return username + " " + command.text
     },

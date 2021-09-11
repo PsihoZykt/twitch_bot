@@ -12,6 +12,9 @@ commandsFileHandler = {
     setFileName(filename) {
         this.filename = filename
         this.filePath = `./channels/${filename.substr(1)}.json`;
+        if(!this.isFileForChannelExists()){
+            fs.appendFileSync(this.filePath, "[]")
+        }
     },
     getCommons() {
         return JSON.parse(JSON.stringify(common))
@@ -61,15 +64,20 @@ commandsFileHandler = {
     getCommandName(command) {
         return command.name;
     },
+    // isFileForChannelExists() {
+    //     if (!fs.existsSync(this.filePath)) {
+    //         fs.appendFileSync(this.filePath, "[]", () => {
+    //         });
+    //         return true;
+    //     }
+    //     return false;
+    //
+    // },
     isFileForChannelExists() {
-        if (!fs.existsSync(this.filePath)) {
-            fs.appendFileSync(this.filePath, "[]", () => {
-            });
-            return true;
-        }
-        return false;
+        return fs.existsSync(this.filePath)
 
     },
+
     addCommandToFile(command) {
         if (!this.isCommandAlreadyExists(command)) {
             let content = this.getChannelCommands();
@@ -124,7 +132,6 @@ commandsFileHandler = {
     ,
 
     findCommandInFile(commandName) {
-
         let commands = this.getCommands();
         for (let i = 0; i < commands.length; i++) {
             let currentCommandName = commands[i].name;
