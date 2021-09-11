@@ -3,12 +3,8 @@ const commandsHandler = require('./commandsHandler')
 let options = require('./bot_options')
 let chat = [];
 const client = new tmi.client(options);
-try {
-    client.connect()
-}
-catch (e) {
-    console.log(e)
-}
+    client.connect().catch(console.error);
+
 client.on('whisper', async (channel, userstate, message, self) => {
         if (userstate.username === "psihoz_ykt") {
             if(message === "пирамидка"){

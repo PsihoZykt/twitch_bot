@@ -1,10 +1,12 @@
 const options = {
     options: {
         debug: true,
+        messagesLogLevel: "info",
     },
     connection: {
         reconnect: true,
         port: 80,
+        secure: true,
     },
     identity: {
         //8sxutt52sx8et1dfyj08elhlde1idn
