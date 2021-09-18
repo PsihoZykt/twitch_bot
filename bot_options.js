@@ -11,13 +11,17 @@ const options = {
     identity: {
         //8sxutt52sx8et1dfyj08elhlde1idn
         username: "advicerfromchat",
-        //password: "oauth:9tlch0mg5br3b9h3wupia08ivo4kws",
-	password: "oauth:4m0avy4v617o1q39a527otw0kx9pvu",
+        //REFRESHTOKEN: in3f4e09lfx7yw8b57dwvsj7ftzjulzqq34lq38t1igwoc0zre
+        // CLIENT ID : gp762nuuoqcoxypju8c569th9wz7q5
+        // ACCESS TOKEN : 9a4qnel42pf9h7o2wvox39pdjtoqro
+	password: "oauth:9a4qnel42pf9h7o2wvox39pdjtoqro",
     },
     channels: [
         'psihoz_ykt',
+	'chester_investor',
         "ariywariy",
-        "nobodydie_", "borodatiyky", "bedegrave",
+        "nobodydie_",
+        "borodatiyky",
         "hotmandogy",
         "7magmaker7",
 

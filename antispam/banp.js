@@ -5,13 +5,15 @@ let banp = (forbiddenWord, channel, userstate) => {
     let chat = index.chat;
     let client = index.client;
     chat.forEach(el => {
-        if (el.message === forbiddenWord) {
+        if (el.message.toLowerCase().indexOf(forbiddenWord) !== -1 ) {
             blockedWords.push({messageText: el.message.split(' ')[1]})
             fs.writeFileSync('./antispam/blocked_words.json', JSON.stringify(blockedWords), function (error) {
                     if (error) throw error // если возникла ошибка
                 }
             );
-            client.timeout(channel, userstate.username, 10, "automatic timeout because of forbidden word")
+            console.log(chat)
+            client.timeout(channel, userstate.username, 1,  "automatic timeout because of forbidden word")
+                .then(data => console.log(data))
                 .catch(err => console.log(err));
         }
     })

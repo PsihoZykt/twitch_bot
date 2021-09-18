@@ -1,46 +1,52 @@
 const tmi = require('tmi.js');
-const commandsHandler = require('./commandsHandler')
+const handlers = require('./commandsHandler')
 let options = require('./bot_options')
 let chat = [];
 const client = new tmi.client(options);
-    client.connect().catch(console.error);
+client.connect().catch(console.error);
 
-client.on('whisper', async (channel, userstate, message, self) => {
-        if (userstate.username === "psihoz_ykt") {
-            if(message === "пирамидка"){
-                client.say("ariywariy", "Kappa")
-                client.say("ariywariy", "Kappa Kappa")
-                client.say("ariywariy", "Kappa Kappa Kappa")
-                client.say("ariywariy", "Kappa Kappa")
-                client.say("ariywariy", "Kappa")
-
-            }
-            else
-            client.say("ariywariy", message)
-        }
-    }
-);
-// client.on('connected', (address, port) => {
-//     let handleAriyUsersSystem = require('./channels/ariywariy_users_system/users_system')
-//     handleAriyUsersSystem(client);
-// });
 //Commands Handling
 client.on('chat', async (channel, userstate, message, self) => {
     if (self) return;
-    let data = ""
-    // This shit with async/await because of rating\stats requests
-    await commandsHandler.handleCommand(message, channel, userstate).then(res => data = res);
-    if (data) {
-        await client.action(channel, data);
-    }
+    handlers.basicCommandsHandler.handleCommand(message, channel, userstate)
+        .then(res => {
+            if (res) client.action(channel, res);
+        })
+
 });
-// Anti-bot\spam system
-let chatBuffer = [];
+//Hota lobby commands Handling
+client.on('chat', async (channel, userstate, message, self) => {
+    if (self) return;
+    // This shit with async/await because of rating\stats requests
+    // TODO: Move async\await shit in separate .on method
+    await handlers.lobbyCommandsHandler.handleCommand(message, channel, userstate).then(res => {
+        if(res) client.action(channel, res)
+    });
+
+});
+// Chat array handler
+client.on('chat', async (channel, userstate, message, self) => {
+    if (self) return;
+    chat.push({
+        channel: channel,
+        username: userstate.username,
+        message: message,
+        time: Date.now()
+    })
+});
+// Anti-bot\spam\moderating system
 client.on('chat', async (channel, userstate, message, self) => {
     // TODO: FIx antispam
+    if (self) return;
+    let antispam = require('./antispam/antispam');
 
-    // let antispam = require('./antispam/antispam');
-    // antispam(channel, userstate, message, self, chatBuffer)
+    handlers.moderatingCommandsHandler.handleCommand(message, channel, userstate).then(res => {
+     if(res) client.action(channel, res);
+    });
+
+    antispam(channel, userstate, message, self, chat)
+
+
 });
 
 
