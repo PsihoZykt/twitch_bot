@@ -10,6 +10,7 @@ let banname = (message, channel, userstate) => {
             if (error) throw error // если возникла ошибка
         }
     );
+
     chat.forEach(el => {
         console.log(el)
         console.log(el.username.toLowerCase().indexOf(forbiddenName.toLowerCase()))
