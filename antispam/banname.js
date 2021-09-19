@@ -1,7 +1,7 @@
 let blockedNames = require('./blocked_names')
 let fs = require('fs');
 let banname = (message, channel, userstate) => {
-    forbiddenName = message.split(' ')[1]
+    let forbiddenName = message.split(' ')[1]
     let index = require('../index')
     let chat = index.chat;
     let client = index.client;
@@ -12,7 +12,7 @@ let banname = (message, channel, userstate) => {
     );
     chat.forEach(el => {
         console.log(el)
-        console.log(el.username.toLowerCase().indexOf(forbiddenName))
+        console.log(el.username.toLowerCase().indexOf(forbiddenName.toLowerCase()))
         if (el.username.toLowerCase().indexOf(forbiddenName) !== -1) {
             client.timeout(channel, el.username, 1, "automatic timeout because of forbidden nickname")
                 .then(data => console.log(data))
