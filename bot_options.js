@@ -18,12 +18,12 @@ const options = {
     },
     channels: [
         'psihoz_ykt',
-	// 'chester_investor',
-    //     "ariywariy",
-    //     "nobodydie_",
-    //     "borodatiyky",
-    //     "hotmandogy",
-    //     "7magmaker7",
+	'chester_investor',
+        "ariywariy",
+        "nobodydie_",
+        "borodatiyky",
+        "hotmandogy",
+        "7magmaker7",
 
 
     ],
