@@ -25,7 +25,6 @@ const options = {
         "hotmandogy",
         "7magmaker7",
         "snowboy_man",
-        "pavllovich"
 
 
     ],
