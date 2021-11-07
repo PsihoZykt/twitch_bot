@@ -47,6 +47,7 @@ let handlers = {
                 type = regResult[0];
             }
             //Privelegues commands
+
             if (userstate.mod || userstate.username === "psihoz_ykt") {
                 switch (type) {
                     case("!add"):
@@ -64,7 +65,17 @@ let handlers = {
                             return getChannelPointsReward(channel, userstate, message)
                         }
                 }
+            } else {
+                switch (type) {
+                    default:
+                        if (commandsFileHandler.findCommandInFile(type)) {
+                            return this.findCommand(message);
+                        } else {
+                            return getChannelPointsReward(channel, userstate, message)
+                        }
+                }
             }
+
 
         },
         //Input: Users message like "!add 111 Hello world!"
