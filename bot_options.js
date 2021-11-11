@@ -27,7 +27,7 @@ const options = {
         // "snowboy_man",
         // "the_clockwork_orange",
     //     "karmikkoala",
-        "eiritel"
+        "estelitaaa"
 
 
     ],
