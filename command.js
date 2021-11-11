@@ -12,7 +12,6 @@ class Command {
             }
         }
         else {
-            console.log(message)
             const words = message.initialMessage.split(' ');
             this.initial = message.initialMessage
             this.type = words[0]

@@ -12,7 +12,7 @@ commandsFileHandler = {
     setFileName(filename) {
         this.filename = filename
         this.filePath = `./channels/${filename.substr(1)}.json`;
-        if(!this.isFileForChannelExists()){
+        if (!this.isFileForChannelExists()) {
             fs.appendFileSync(this.filePath, "[]")
         }
     },
@@ -35,7 +35,11 @@ commandsFileHandler = {
         return JSON.parse(this.commands)
     },
     updateFile() {
-        this.commands = fs.readFileSync(this.filePath, 'utf8');
+        try {
+            this.commands = fs.readFileSync(this.filePath, 'utf8');
+        } catch (e) {
+            console.log(e)
+        }
     },
     rewriteCommand(command, text) {
         let tempCommands = this.getCommands();
@@ -123,7 +127,6 @@ commandsFileHandler = {
     ,
 
     findCommandInFile(commandName) {
-
         let commands = this.getCommands();
         for (let i = 0; i < commands.length; i++) {
             let currentCommandName = commands[i].name;

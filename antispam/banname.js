@@ -14,8 +14,6 @@ let banname = async (command, channel, userstate) => {
     // );
 
     chat.forEach(el => {
-        console.log(el)
-        console.log(el.username.toLowerCase().indexOf(forbiddenName.toLowerCase()))
         if (el.username.toLowerCase().indexOf(forbiddenName) !== -1) {
             client.timeout(channel, el.username, 1, "automatic timeout because of forbidden nickname")
                 .then(data => console.log(data))

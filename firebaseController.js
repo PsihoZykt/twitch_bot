@@ -1,6 +1,25 @@
 const db = require("./firebase");
 const Command = require("./command");
 const firebase = {
+    async setHeroesMode(channel, command){
+        channel = channel.slice(1)
+        if ((command.name && command.type) && (command.name === "enable" || command.name === "disable")) {
+            const document = db.collection(channel).doc("heroesMode")
+            await document.set(({
+                text: command.name
+            }))
+        }
+    },
+    async getHeroesMode(channel, command){
+        channel = channel.slice(1)
+        console.log(command)
+
+        if ((command.type) ) {
+            const document = db.collection(channel).doc("heroesMode")
+            const heroesMode = await document.get()
+            if(heroesMode.data()) return heroesMode.data().text
+        }
+    },
     async create(channel, command) {
         channel = channel.slice(1)
         console.log(command)

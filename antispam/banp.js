@@ -8,7 +8,6 @@ let banp = async (command, channel, userstate) => {
     let chat = index.chat;
     let client = index.client;
 
-    console.log(command)
    await firebaseController.createForbiddenMessage(forbiddenMessage)
     // fs.writeFileSync('./antispam/blocked_words.json', JSON.stringify(blockedWords), function (error) {
     //         if (error) throw error // если возникла ошибка

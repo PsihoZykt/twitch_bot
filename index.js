@@ -26,6 +26,15 @@ client.on('chat', async (channel, userstate, message, self) => {
     });
 
 });
+client.on('chat', async (channel, userstate, message, self) => {
+    if (self) return;
+    // This shit with async/await because of rating\stats requests
+    // TODO: Move async\await shit in separate .on method
+    await handlers.heroesCommandsHandler.handleCommand(message, channel, userstate).then(res => {
+        if (res) client.action(channel, res)
+    });
+
+});
 // Chat array handler
 client.on('chat', async (channel, userstate, message, self) => {
     if (self) return;

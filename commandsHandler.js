@@ -1,4 +1,4 @@
-const commandsFileHandler = require('./FileHandler')
+let commandsFileHandler = require('./FileHandler')
 let h3lobby = require('./h3lobby/h3lobby')
 let banp = require('./antispam/banp')
 let banname = require('./antispam/banname')
@@ -12,7 +12,7 @@ let handlers = {
 
             const command = new Command(parseMessage(message))
             let commandType = command.type
-            if(commandType) {
+            if (commandType) {
                 switch (commandType) {
                     case("!rating"):
                         return await h3lobby.getRating(channel, command).then(res => {
@@ -36,13 +36,14 @@ let handlers = {
         async handleCommand(message, channel, userstate) {
             const command = new Command(parseMessage(message))
             let commandType = command.type
-            console.log(command)
             // Privelegues commands
             if (commandType) {
                 if (userstate.mod || userstate.username === "psihoz_ykt") {
                     switch (commandType) {
                         case("!add"):
                             return this.addCommand(channel, command);
+                        case("!setHeroes"):
+                            return this.setHeroesMode(channel, command);
                         case("!change"):
                             return this.changeCommand(channel, command)
                         case("!delete"):
@@ -74,13 +75,16 @@ let handlers = {
         async deleteCommand(channel, command) {
             await firebaseController.delete(channel, command)
         },
+
         getAllCommands(channel) {
             return commandsFileHandler.getCommandsNames().join(" ")
 
         },
+        async setHeroesMode(channel, command) {
+            await firebaseController.setHeroesMode(channel, command)
+        },
 
     },
-
     moderatingCommandsHandler: {
         async handleCommand(message, channel, userstate) {
 
@@ -100,5 +104,37 @@ let handlers = {
             }
         },
     },
+    heroesCommandsHandler: {
+        async handleCommand(message, channel, userstate) {
+            let commandsFileHandler = require('./FileHandler')
+            let command = new Command(parseMessage(message))
+            let heroesMode = await this.getHeroesMode(channel, command)
+            if (heroesMode === "enable") {
+                commandsFileHandler.setFileName(channel);
+
+                if (commandsFileHandler.findCommandInFile(command.type))
+                    return this.findCommand(message);
+            }
+        },
+        findCommand(message) {
+            var commandRe = /!([\wа-яА-Я]+)/g;
+
+            let commandName = commandRe.exec(message)[0];
+            let username = "";
+            var re = /@(\w+)/g;
+            let regResult = re.exec(message);
+
+            if (regResult !== null) {
+                username = regResult[0];
+            }
+
+            let command = commandsFileHandler.findCommandInFile(commandName);
+            return username + " " + command.text
+        },
+
+        async getHeroesMode(channel, command) {
+            return await firebaseController.getHeroesMode(channel, command)
+        },
+    }
 }
 module.exports = handlers
