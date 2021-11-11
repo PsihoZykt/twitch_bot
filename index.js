@@ -5,13 +5,10 @@ let chat = [];
 const client = new tmi.client(options);
 client.connect().catch(console.error);
 
-const db = require('./firebase')
-
 //Commands Handling
 client.on('chat', async (channel, userstate, message, self) => {
     if (self) return;
-    handlers.basicCommandsHandler.handleCommand(message, channel, userstate)
-        .then(res => {
+    handlers.basicCommandsHandler.handleCommand(message, channel, userstate).then(res => {
             if (res) client.action(channel, res);
         })
 
@@ -19,16 +16,15 @@ client.on('chat', async (channel, userstate, message, self) => {
 //Hota lobby commands Handling
 client.on('chat', async (channel, userstate, message, self) => {
     if (self) return;
-    // This shit with async/await because of rating\stats requests
     await handlers.lobbyCommandsHandler.handleCommand(message, channel, userstate).then(res => {
         if (res) client.action(channel, res)
     });
 
 });
+
+//Handles commands which are in the files ( creatures, spells for heroes etc)
 client.on('chat', async (channel, userstate, message, self) => {
     if (self) return;
-    // This shit with async/await because of rating\stats requests
-    // TODO: Move async\await shit in separate .on method
     await handlers.heroesCommandsHandler.handleCommand(message, channel, userstate).then(res => {
         if (res) client.action(channel, res)
 
@@ -47,10 +43,7 @@ client.on('chat', async (channel, userstate, message, self) => {
 });
 // Anti-bot\spam\moderating system
 client.on('chat', async (channel, userstate, message, self) => {
-    // TODO: FIx antispam
     if (self) return;
-    let antispam = require('./antispam/antispam');
-
     handlers.moderatingCommandsHandler.handleCommand(message, channel, userstate).then(res => {
         if (res) {
             if (res.forbidden) {
