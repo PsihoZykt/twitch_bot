@@ -15,7 +15,7 @@ let banp = async (command, channel, userstate) => {
     // );
     chat.forEach(el => {
         if (el.message.toLowerCase().indexOf(forbiddenMessage.toLowerCase()) !== -1 ) {
-            client.timeout(channel, el.username, 1,  "automatic timeout because of forbidden word")
+            client.timeout(el.channel, el.username, 1,  "automatic timeout because of forbidden word")
                 .then(data => console.log(data))
                 .catch(err => console.log(err));
         }
