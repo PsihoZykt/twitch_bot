@@ -11,9 +11,9 @@ let banp = async (command, channel, userstate) => {
     let client = index.client;
     console.log(forbiddenMessage)
    await firebaseController.createForbiddenMessage(forbiddenMessage, channel, userstate)
-    chat.forEach(el => {
+    chat.some(el => {
         if (el.message.indexOf(forbiddenMessage.toLowerCase()) !== -1 ) {
-            client.timeout(el.channel, el.username, 1,  `automatic timeout because of forbidden word. Added by ${userstate.username} on ${channel}`)
+            client.deletemessage(el.channel,el.id)
                 .then(data => console.log(data))
                 .catch(err => console.log(err));
         }

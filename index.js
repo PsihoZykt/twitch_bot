@@ -25,6 +25,7 @@ client.on('chat', async (channel, userstate, message, self) => {
 //Handles commands which are in the files ( creatures, spells for heroes etc)
 client.on('chat', async (channel, userstate, message, self) => {
     if (self) return;
+
     await handlers.heroesCommandsHandler.handleCommand(message, channel, userstate).then(res => {
         if (res) client.action(channel, res)
 
@@ -37,6 +38,7 @@ client.on('chat', async (channel, userstate, message, self) => {
     chat.push({
         channel: channel,
         username: userstate.username,
+        id: userstate.id,
         message: message,
         time: Date.now()
     })
@@ -47,7 +49,7 @@ client.on('chat', async (channel, userstate, message, self) => {
     handlers.moderatingCommandsHandler.handleCommand(message, channel, userstate).then(res => {
         if (res) {
             if (res.forbidden) {
-                client.timeout(channel, userstate.username, 1, res.reason)
+                client.deletemessage(channel, userstate.id)
                     .then(data => console.log(data))
                     .catch(err => console.log(err));
             }

@@ -39,7 +39,7 @@ let handlers = {
             // Privelegues commands
             console.log(userstate)
             if (commandType) {
-                if (userstate.mod || userstate.username === "psihoz_ykt" || userstate.badges.broadcaster === "1") {
+                if (userstate.mod || userstate.username === "psihoz_ykt" || userstate.username === channel.slice(1) ) {
                     switch (commandType) {
                         case("!add"):
                             return this.addCommand(channel, command);
@@ -91,8 +91,9 @@ let handlers = {
 
             const command = new Command(parseMessage(message))
             let commandType = command.type
+
             if (commandType) {
-                if (userstate.mod || userstate.username === "psihoz_ykt") {
+                if (userstate.mod  || userstate.username === channel.slice(1)) {
                     switch (commandType) {
                         case ("!banp"):
                             return banp(command, channel, userstate)
