@@ -17,18 +17,15 @@ const options = {
 	password: "oauth:9a4qnel42pf9h7o2wvox39pdjtoqro",
     },
     channels: [
-        // 'psihoz_ykt',
-	'chester_investor',
-        "ariywariy",
-    //     "nobodydie_",
-        "borodatiyky",
-        "hotmandogy",
-        "7magmaker7",
-        // "snowboy_man",
-        // "the_clockwork_orange",
-    //     "karmikkoala",
-        "estelitaaa"
-
+        'psihoz_ykt',
+	// 'chester_investor',
+    //     "ariywariy",
+    //     "borodatiyky",
+    //     "hotmandogy",
+    //     "7magmaker7",
+    //
+    //     "estelitaaa"
+    //
 
     ],
 };

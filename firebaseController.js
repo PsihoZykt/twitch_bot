@@ -52,11 +52,13 @@ const firebase = {
         let forbiddenNamesRef = db.collection("forbiddenNames")
         let forbiddenNames = await forbiddenNamesRef.get()
         let forbiddenNameFlag = false
+        let forbiddenNameReason = "auto timeout because of forbidden name"
+        let forbiddenWordReason = "auto timeout because of forbidden word"
         forbiddenNames.forEach(name => {
                 if (userstate.username.toLowerCase().indexOf(name.data().text.toLowerCase()) !== -1 ||
                     name.data().text.toLowerCase().indexOf(userstate.username.toLowerCase()) !== -1) {
                     forbiddenNameFlag = true;
-
+                    forbiddenNameReason = name.data().commentary
                 }
             }
         )
@@ -64,6 +66,7 @@ const firebase = {
         forbiddenWords.forEach(word => {
             if(command.initial.toLowerCase().indexOf(word.data().text.toLowerCase()) !== -1){
                 forbiddenWordFlag = true
+                forbiddenWordReason = forbiddenWordReason + " added by " + word.data().author + " on " + word.data().channel
             }
         })
 
@@ -72,14 +75,14 @@ const firebase = {
                 message: command,
                 username: userstate.username,
                 forbidden: true,
-                reason: "auto timeout because of forbidden message"
+                reason: forbiddenWordReason
             }
         if (forbiddenNameFlag)
             return {
                 message: command,
                 username: userstate.username,
                 forbidden: true,
-                reason: "Auto timeout because of forbidden nickname"
+                reason: "Auto ban from bot, moder commentary: [" + forbiddenNameReason + "]"
             }
 
     },
@@ -102,16 +105,24 @@ const firebase = {
         if (command.name)
             await db.collection(channel).doc(command.name).delete()
     },
-    async createForbiddenMessage(message) {
+    async createForbiddenMessage(message, channel, userstate) {
         const document = db.collection("forbiddenWords").doc(message)
         await document.set(({
-            text: message
+            text: message,
+            author: userstate.username,
+            channel: channel
         }))
     },
-    async createForbiddenName(name) {
-        const document = db.collection("forbiddenNames").doc(name)
+    async createForbiddenName(command) {
+        const forbiddenName =  command.name
+        let moderCommentary;
+        if(command.text)
+         moderCommentary = command.text
+        else moderCommentary = ""
+        const document = db.collection("forbiddenNames").doc(forbiddenName)
         await document.set(({
-            text: name
+            text: forbiddenName,
+            commentary: moderCommentary
         }))
     }
 }
