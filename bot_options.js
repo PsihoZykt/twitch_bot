@@ -17,7 +17,7 @@ const options = {
 	password: "oauth:9a4qnel42pf9h7o2wvox39pdjtoqro",
     },
     channels: [
-        'psihoz_ykt',
+        // 'psihoz_ykt',
 	'chester_investor',
         "ariywariy",
     //     "nobodydie_",
