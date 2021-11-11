@@ -3,7 +3,8 @@ let fs = require('fs');
 let banp = async (command, channel, userstate) => {
     let index = require('../index')
     // let forbiddenWord = message.split(' ')[1]
-    const forbiddenMessage = command.name
+    // DOn't ask me why it's work like that, IDK
+    const forbiddenMessage = command.name + " " + command.text
     let firebaseController = require('../firebaseController')
     let chat = index.chat;
     let client = index.client;
@@ -14,7 +15,7 @@ let banp = async (command, channel, userstate) => {
     //     }
     // );
     chat.forEach(el => {
-        if (el.message.toLowerCase().indexOf(forbiddenMessage.toLowerCase()) !== -1 ) {
+        if (el.message.indexOf(forbiddenMessage.toLowerCase()) !== -1 ) {
             client.timeout(el.channel, el.username, 1,  "automatic timeout because of forbidden word")
                 .then(data => console.log(data))
                 .catch(err => console.log(err));

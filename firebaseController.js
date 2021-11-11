@@ -45,13 +45,14 @@ const firebase = {
     },
 
     async checkForForbidden(channel, command, userstate) {
-        const forbiddenWordsRef = db.collection("forbiddenWords").doc(command.initial)
-        const forbiddenWord = await forbiddenWordsRef.get()
+        // const forbiddenWordRef = db.collection("forbiddenWords").doc(command.initial)
+        const forbiddenWordsRef = db.collection("forbiddenWords")
+        // const forbiddenWord = await forbiddenWordRef.get()
+        const forbiddenWords = await forbiddenWordsRef.get()
         let forbiddenNamesRef = db.collection("forbiddenNames")
         let forbiddenNames = await forbiddenNamesRef.get()
         let forbiddenNameFlag = false
         forbiddenNames.forEach(name => {
-                console.log(name.data().text)
                 if (userstate.username.toLowerCase().indexOf(name.data().text.toLowerCase()) !== -1 ||
                     name.data().text.toLowerCase().indexOf(userstate.username.toLowerCase()) !== -1) {
                     forbiddenNameFlag = true;
@@ -59,7 +60,14 @@ const firebase = {
                 }
             }
         )
-        if (forbiddenWord.data())
+        let forbiddenWordFlag = false
+        forbiddenWords.forEach(word => {
+            if(command.initial.toLowerCase().indexOf(word.data().text.toLowerCase()) !== -1){
+                forbiddenWordFlag = true
+            }
+        })
+
+        if (forbiddenWordFlag)
             return {
                 message: command,
                 username: userstate.username,
