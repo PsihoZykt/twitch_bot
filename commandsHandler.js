@@ -37,8 +37,9 @@ let handlers = {
             const command = new Command(parseMessage(message))
             let commandType = command.type
             // Privelegues commands
+            console.log(userstate)
             if (commandType) {
-                if (userstate.mod || userstate.username === "psihoz_ykt") {
+                if (userstate.mod || userstate.username === "psihoz_ykt" || userstate.badges.broadcaster === "1") {
                     switch (commandType) {
                         case("!add"):
                             return this.addCommand(channel, command);
