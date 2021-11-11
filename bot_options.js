@@ -18,13 +18,13 @@ const options = {
     },
     channels: [
         'psihoz_ykt',
-	// 'chester_investor',
-    //     "ariywariy",
-    //     "borodatiyky",
-    //     "hotmandogy",
+	'chester_investor',
+        "ariywariy",
+        "borodatiyky",
+        "hotmandogy",
     //     "7magmaker7",
     //
-    //     "estelitaaa"
+        "estelitaaa"
     //
 
     ],
