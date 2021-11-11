@@ -5,6 +5,8 @@ let chat = [];
 const client = new tmi.client(options);
 client.connect().catch(console.error);
 
+const db = require('./firebase')
+
 //Commands Handling
 client.on('chat', async (channel, userstate, message, self) => {
     if (self) return;
@@ -20,7 +22,7 @@ client.on('chat', async (channel, userstate, message, self) => {
     // This shit with async/await because of rating\stats requests
     // TODO: Move async\await shit in separate .on method
     await handlers.lobbyCommandsHandler.handleCommand(message, channel, userstate).then(res => {
-        if(res) client.action(channel, res)
+        if (res) client.action(channel, res)
     });
 
 });
@@ -41,14 +43,23 @@ client.on('chat', async (channel, userstate, message, self) => {
     let antispam = require('./antispam/antispam');
 
     handlers.moderatingCommandsHandler.handleCommand(message, channel, userstate).then(res => {
-     if(res) client.action(channel, res);
+        if (res) {
+            if (res.forbidden) {
+                client.timeout(channel, userstate.username, 1, res.reason)
+                    .then(data => console.log(data))
+                    .catch(err => console.log(err));
+            }
+        }
     });
 
-    antispam(channel, userstate, message, self, chat)
 
 
 });
 
-
 module.exports.client = client;
 module.exports.chat = chat;
+
+
+
+
+

@@ -64,15 +64,6 @@ commandsFileHandler = {
     getCommandName(command) {
         return command.name;
     },
-    // isFileForChannelExists() {
-    //     if (!fs.existsSync(this.filePath)) {
-    //         fs.appendFileSync(this.filePath, "[]", () => {
-    //         });
-    //         return true;
-    //     }
-    //     return false;
-    //
-    // },
     isFileForChannelExists() {
         return fs.existsSync(this.filePath)
 
@@ -132,6 +123,7 @@ commandsFileHandler = {
     ,
 
     findCommandInFile(commandName) {
+
         let commands = this.getCommands();
         for (let i = 0; i < commands.length; i++) {
             let currentCommandName = commands[i].name;

@@ -1,4 +1,4 @@
-gilet fs = require('fs')
+let fs = require('fs')
 let axios = require('axios')
 let ariyUsersPath = './users/users.json'
 let handleAriyUsersSystem = (client) => {

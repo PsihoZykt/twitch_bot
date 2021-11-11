@@ -11,8 +11,8 @@ let h3lobby = {
         }
         return streamerName;
     },
-    getRating(channel, words) {
-        let streamerName = this.getStreamerName(channel, words)
+    getRating(channel, command) {
+        let streamerName = this.getStreamerName(channel, command)
 
         return axios.get(`https://heroes3.tv/${streamerName}#g`).then((res, err) => {
             if (err) return console.error(err);

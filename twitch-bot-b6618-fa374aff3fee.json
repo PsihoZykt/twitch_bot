@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "twitch-bot-b6618",
+  "private_key_id": "fa374aff3fee71b67d93d152a340feae88b4662d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQClWgLCFWcxvX6O\nbm77up/uxaXOpi6Mw70AIYVMQm6g5ta5bLz17LGKIpc0oSJ6Q2xmXGwqOdz4aZRv\n79OyPksPY3RZtPWyOoRsRqL6QOowY4QqUCzf3ZkXQOwM4f4iYv2lMZHOOYj6TEKM\nlN6n97wLLPE/Mj7hVmWWGjweb4N/EfyZi6loQKiR5n+wg7s5LJJCR12Z1z6hOdP6\nCkTL2y5AVPRCp/AMXJiWZoc3pYzUHC98UxLfFl37bB5vhOFLxFC1Jh+L0xIw3tLx\nS4P1X/mHidjXa24CtOHsYwY4x21uyt4+aglbnQsaWjz51mkwH8gpTwqUbZoqi9eg\n6ROGhI3xAgMBAAECggEAA52RO98t73d+Qe0GPjjZcGYf9wHJOMi65DrXaFB3jMsf\nXNSU2SfAxg11kvAHCfdZcm+I6e9z9naQiVYMIfScvYxmKeP8D1aaOKfevmwW8tHq\nPOad5JM62rhPsQRsAyJ4+1i3IHQ/m4F5XwuORsvy76ee6svVdiXmeL7AG8ZCcM/R\n0IUgPBNuDyaq5r9POALXdEPfVVQHQZQ3qRCyqBDNxJrn3YTO3U8usQ+xKKzPKjyD\n214YQI2GZx+AGECHuqY0PCMSvepwQ4UfoxY4Fj7nkgFt6O3GMdcXt8VW2+h32DDX\nqWnsiuGHTLSXSDgYNiUZ/+kvKio+5Ym11EqDNR8GAQKBgQDm1y5Lj2Pe3TuKHmR6\nuQT4u+ZbYQk6l0MKpTaxrDucCkWChaI1odmKDxHuyuMOQ9NgQjnXJr7Z4HRHpXRZ\np2b/b92f/uvCPkd1b2ja136dRb+Dg8q9rhPmcO118ILo3BgnxviwAaxwFslVdJVk\nVFbOHxdSFoitUW4r2U463/KGYQKBgQC3X5WBXJWpn9Ck7V9kWeniNwBuzY1ri5OY\nVPDsIa9SXIcNnuO3iWjLq+JmshSFhc0rbeojfLa+DLGXl8DbZSK+AVe0boBhSKEp\nqZIPZeBSRNPREINeZp7q5H40afksYfvOLkWWqWy7fFm0di4vJ6ddiyrYOninknE2\nOvMCKXoRkQKBgCoenS3gTgK+Lzz2arMRy1xvPIrz27E7JFpu5tnoaUABh8lXBM/w\nZjcQpN8DWgaiTZFExDUDttMeZ1kjUWWCbAKzsKae5vmcT4GYAHPd2hZsQZOHmpid\niLgFZu6cIebHMgkf/wRuab5SCg5zpUaXNPeLKMArqGincQjDL8kCT8hBAoGAbJXV\nWj0RAtj4HDHUAwCbVrFrODHQRJbqV5I0+B8aSpMwBgjIn65mt/SYpGdfb5HD5Ku5\nsjnvnKq3nyTltwU0hX8WCGpG61Su2pTnQOb65ryLEYnNwODTyhR0B2WZf4amLXmJ\nC6ZYFM2V8R7qSlIY8XOvc0tslw5Iq+xMakNVXYECgYBLI7a43liM3KbjpuLBfkCM\ntMW2m4i7QA/W2vvQepOQ72fGyVtPqi+NeNEaoB9cuoV1dXY5esqn6sZOE/XRlJbx\nGHw6kcgRiP0HRRF9uTkSZyGKBv851UKbzWcdJ2Nk6hF5wtQaTFdGIU7G65Edwd3I\nMMTTHXJaVCwK/w/Ak2jgjg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "twitch-bot-b6618@appspot.gserviceaccount.com",
+  "client_id": "104325121746711694625",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/twitch-bot-b6618%40appspot.gserviceaccount.com"
+}

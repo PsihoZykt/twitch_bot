@@ -1,156 +1,103 @@
 const commandsFileHandler = require('./FileHandler')
 let h3lobby = require('./h3lobby/h3lobby')
-let getFollowAge = require('./twitchAPI/followAge');
-let getFollowAgeTop = require('./twitchAPI/followAgeTop')
 let banp = require('./antispam/banp')
 let banname = require('./antispam/banname')
-let getChannelPointsReward = require('./channelPoints/ariywariy/channelPoints')
 const Command = require('./command');
+const firebaseController = require('./firebaseController')
+const parseMessage = require('./util')
 let handlers = {
-     lobbyCommandsHandler:{
+    //TODO: Almost doesn't work, fix it?
+    lobbyCommandsHandler: {
         async handleCommand(message, channel, userstate) {
-            commandsFileHandler.setFileName(channel);
-            const words = message.toLowerCase().split(' ');
-            var commandRe = /!([\wа-яА-Я]+)/g;
-            let regResult = commandRe.exec(message);
-            let type = ""
-            if (regResult !== null) {
-                type = regResult[0];
-            }
-            switch (type) {
-                case("!rating"):
-                    return await h3lobby.getRating(channel, words).then(res => {
-                        return res;
-                    });
-                case("!stats"):
-                    return await h3lobby.getStats(channel, words).then(res => {
-                        return res;
-                    });
-                case("!last"):
-                    return await h3lobby.getLast(channel, words).then(res => {
-                        return res;
-                    });
 
-            }
+            const command = new Command(parseMessage(message))
+            let commandType = command.type
+            if(commandType) {
+                switch (commandType) {
+                    case("!rating"):
+                        return await h3lobby.getRating(channel, command).then(res => {
+                            return res;
+                        });
+                    case("!stats"):
+                        return await h3lobby.getStats(channel, command).then(res => {
+                            return res;
+                        });
+                    case("!last"):
+                        return await h3lobby.getLast(channel, command).then(res => {
+                            return res;
+                        });
 
+                }
+            }
         },
 
     },
-     basicCommandsHandler: {
+    basicCommandsHandler: {
         async handleCommand(message, channel, userstate) {
-            commandsFileHandler.setFileName(channel);
-            const words = message.toLowerCase().split(' ');
-            var commandRe = /!([\wа-яА-Я]+)/g;
-            let regResult = commandRe.exec(message);
-            let type = ""
-            if (regResult !== null) {
-                type = regResult[0];
-            }
-            //Privelegues commands
+            const command = new Command(parseMessage(message))
+            let commandType = command.type
+            console.log(command)
+            // Privelegues commands
+            if (commandType) {
+                if (userstate.mod || userstate.username === "psihoz_ykt") {
+                    switch (commandType) {
+                        case("!add"):
+                            return this.addCommand(channel, command);
+                        case("!change"):
+                            return this.changeCommand(channel, command)
+                        case("!delete"):
+                            return this.deleteCommand(channel, command);
+                        case("!commands"):
+                            return this.getAllCommands(channel);
+                        default: {
+                            return this.getCommand(channel, command)
 
-            if (userstate.mod || userstate.username === "psihoz_ykt") {
-                switch (type) {
-                    case("!add"):
-                        return this.addCommand(channel, message);
-                    case("!change"):
-                        return this.changeCommand(channel, message)
-                    case("!delete"):
-                        return this.deleteCommand(channel, message);
-                    case("!commands"):
-                        return this.getAllCommands(channel);
-                    default:
-                        if (commandsFileHandler.findCommandInFile(type)) {
-                            return this.findCommand(message);
-                        } else {
-                            return getChannelPointsReward(channel, userstate, message)
                         }
-                }
-            } else {
-                switch (type) {
-                    default:
-                        if (commandsFileHandler.findCommandInFile(type)) {
-                            return this.findCommand(message);
-                        } else {
-                            return getChannelPointsReward(channel, userstate, message)
-                        }
+                    }
+
+                } else {
+                    return this.getCommand(channel, command)
                 }
             }
-
-
         },
+
         //Input: Users message like "!add 111 Hello world!"
-        addCommand(channel, message) {
-            const command = new Command(message);
-            if (!command.text) return "";
-            if (commandsFileHandler.addCommandToFile(command))
-                return;
-            else
-                return command.getName() + " is already exists"
-
+        async addCommand(channel, command) {
+            await firebaseController.create(channel, command)
         },
-        changeCommand
-            (channel, message) {
-            let messageCommand = new Command(message);
-            if (commandsFileHandler.isCommandAlreadyExists(messageCommand)) {
-                let command = commandsFileHandler.getCommandByName(messageCommand.getName());
-                commandsFileHandler.rewriteCommand(command, messageCommand.getText());
-                commandsFileHandler.updateFile();
-            } else {
-                return messageCommand.getName() + " does not exists"
-            }
-        }
-        ,
-        deleteCommand(channel, message) {
-            const command = new Command(message);
-            if (commandsFileHandler.isCommandAlreadyExists(command)) {
-                commandsFileHandler.deleteCommandFromFile(command)
-                commandsFileHandler.updateFile();
-                return command.getName() + " was deleted"
-            } else {
-                console.log('doesnt exists')
-                return command.getName() + " doesn't exists"
-            }
-        }
-        ,
+        async getCommand(channel, command) {
+            return await firebaseController.read(channel, command)
+        },
+        async changeCommand(channel, command) {
+            await firebaseController.update(channel, command)
+        },
+        async deleteCommand(channel, command) {
+            await firebaseController.delete(channel, command)
+        },
         getAllCommands(channel) {
             return commandsFileHandler.getCommandsNames().join(" ")
 
         },
-        findCommand(message) {
-            var commandRe = /!([\wа-яА-Я]+)/g;
 
-            let commandName = commandRe.exec(message)[0];
-            let username = "";
-            var re = /@(\w+)/g;
-            let regResult = re.exec(message);
-
-            if (regResult !== null) {
-                username = regResult[0];
-            }
-
-            let command = commandsFileHandler.findCommandInFile(commandName);
-            return username + " " + command.text
-        },
     },
+
     moderatingCommandsHandler: {
         async handleCommand(message, channel, userstate) {
-            commandsFileHandler.setFileName(channel);
-            const words = message.toLowerCase().split(' ');
-            var commandRe = /!([\wа-яА-Я]+)/g;
-            let regResult = commandRe.exec(message);
-            let type = ""
-            if (regResult !== null) {
-                type = regResult[0];
-            }
-            if (userstate.mod || userstate.username === "psihoz_ykt" ) {
-                switch (type) {
-                    case ("!banp"):
-                        return banp(message, channel, userstate)
-                    case ("!banname"):
-                        return banname(message, channel, userstate)
+
+            const command = new Command(parseMessage(message))
+            let commandType = command.type
+            if (commandType) {
+                if (userstate.mod || userstate.username === "psihoz_ykt") {
+                    switch (commandType) {
+                        case ("!banp"):
+                            return banp(command, channel, userstate)
+                        case ("!banname"):
+                            return banname(command, channel, userstate)
+                    }
+                } else {
+                    return firebaseController.checkForForbidden(channel, command, userstate)
                 }
             }
-
         },
     },
 }
