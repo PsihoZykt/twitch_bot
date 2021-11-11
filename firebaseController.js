@@ -55,8 +55,7 @@ const firebase = {
         let forbiddenNameReason = "auto timeout because of forbidden name"
         let forbiddenWordReason = "auto timeout because of forbidden word"
         forbiddenNames.forEach(name => {
-                if (userstate.username.toLowerCase().indexOf(name.data().text.toLowerCase()) !== -1 ||
-                    name.data().text.toLowerCase().indexOf(userstate.username.toLowerCase()) !== -1) {
+                if (userstate.username.toLowerCase().indexOf(name.data().text.toLowerCase()) !== -1 ){
                     forbiddenNameFlag = true;
                     forbiddenNameReason = name.data().commentary
                 }
