@@ -6,12 +6,11 @@ const heroku = "https://lit-citadel-01156.herokuapp.com"
 const socket = openSocket(`${heroku}:${process.env.PORT}`);
 
     function subscribeToChat(cb) {
-
   socket.on('chat', chat => {
     console.log("receive chat" , chat)
-    cb(null, chat)
+    // cb(null, chat)
   });
-  socket.emit('subscribeToChat', 1000);
+  // socket.emit('subscribeToChat', 1000);
 }
 function App() {
   let [chat, setChat] = useState([])
