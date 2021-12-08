@@ -14,7 +14,7 @@ const server = createServer(app);
 const io = new Server(server
     , {
  // cors: {
-     transports: ['websocket', "polling"],
+ //     transports: ['websocket', "polling"],
  // },
  //    rejectUnauthorized: false ,
  //    allowEIO3: true,

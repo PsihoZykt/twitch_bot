@@ -9,11 +9,11 @@ const socket = io(`${heroku}:${process.env.PORT}`
 )
 
     function subscribeToChat(cb) {
-  // socket.on('chat', chat => {
-  //   console.log("receive chat" , chat)
-  //   cb(null, chat)
-  // });
-  // socket.emit('subscribeToChat', 1000);
+  socket.on('chat', chat => {
+    console.log("receive chat" , chat)
+    cb(null, chat)
+  });
+  socket.emit('subscribeToChat', 1000);
 }
 function App() {
   let [chat, setChat] = useState([])
