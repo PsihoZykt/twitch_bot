@@ -9,7 +9,7 @@ const path = require('path')
 const app = express()
 const httpServer = require("http").createServer(app);
 const io = require('socket.io')(httpServer, {  cors: {    origin: "*"}})
-    .listen(httpServer);
+    // .listen(httpServer);
 io.on('connection', (client) => {
     client.on('subscribeToChat', (interval) => {
         console.log('client is subscribing to timer with interval ', interval);
