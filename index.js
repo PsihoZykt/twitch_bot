@@ -18,7 +18,7 @@ const io = new Server(server
  // },
  //    rejectUnauthorized: false ,
  //    allowEIO3: true,
- //    // serveClient: true
+    serveClient: true
 }
 );
 
