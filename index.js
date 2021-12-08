@@ -10,13 +10,12 @@ const http = require("http")
 const app = express()
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
-    cors: {
-        methods: ["GET", "POST"],
-        transports: ['websocket', 'polling'],
-        credentials: true
-    },
+
+    transports: ['websocket', 'polling'],
+
     rejectUnauthorized: false ,
     allowEIO3: true,
+    serveClient: true
 });
 
 if(process.env.NODE_ENV === "production")  {
