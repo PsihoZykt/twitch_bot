@@ -19,7 +19,7 @@ if(process.env.NODE_ENV === "production")  {
         const index = path.join(__dirname, 'client', 'build', 'index.html');
         res.sendFile(index);
     })
-    server.listen(process.env.PORT || 5000, () => console.log(`App has been started on port 5000`))
+    server.listen(process.env.PORT , () => console.log(`App has been started on port 5000`))
         .on("error", (err) => console.log(err))
 }
 
@@ -31,7 +31,7 @@ io.on('connection', (client) => {
         // }, interval);
     // });
 });
-// io.listen(server);
+io.listen(server);
 //Commands Handling
 client.on('chat', async (channel, userstate, message, self) => {
     if (self) return;
