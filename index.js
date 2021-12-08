@@ -6,7 +6,6 @@ let chat = [];
 const client = new tmi.client(options);
 client.connect().catch(console.error);
 const path = require('path')
-const express = require('express')
 const http = require("http")
 const app = express()
 const server = http.createServer(app);
