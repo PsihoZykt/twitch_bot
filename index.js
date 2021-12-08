@@ -25,10 +25,10 @@ if(process.env.NODE_ENV === "production")  {
         const index = path.join(__dirname, 'client', 'build', 'index.html');
         res.sendFile(index);
     })
-    httpServer.listen(process.env.PORT || 5000, () => console.log(`App has been started on port 5000`))
+    httpServer.listen( 5000, () => console.log(`App has been started on port 5000`))
         .on("error", (err) => console.log(err))
 }
-const io = require('socket.io')(httpServer, {  cors: {    origin: "https://lit-citadel-01156.herokuapp.com:5000/",    methods: ["GET", "POST"]}});
+const io = require('socket.io')(httpServer, {  cors: {    origin: "*",    methods: ["GET", "POST"]}});
 
 io.on('connection', (client) => {
     client.on('subscribeToChat', (interval) => {
@@ -38,9 +38,7 @@ io.on('connection', (client) => {
         }, interval);
     });
 });
-const port =  8000
-io.listen(port);
-console.log('listening on port ', port);
+io.listen(httpServer);
 //Commands Handling
 client.on('chat', async (channel, userstate, message, self) => {
     if (self) return;
