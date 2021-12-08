@@ -10,7 +10,9 @@ const http = require("http")
 const app = express()
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
-    transports: ['websocket'],
+    origin: "https://lit-citadel-01156.herokuapp.com",
+    methods: ["GET", "POST"],
+    transports: ['websocket', 'polling'],
     rejectUnauthorized: false ,
     allowEIO3: true,
 });
