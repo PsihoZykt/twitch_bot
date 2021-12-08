@@ -5,50 +5,40 @@ const express = require("express");
 let chat = [];
 const client = new tmi.client(options);
 client.connect().catch(console.error);
-const path = require('path')
-const app = express()
-const httpServer = require("http").createServer(app);
-// const io = require('socket.io')(httpServer, {  cors: {    origin: "*"}})
-const io = require('socket.io')(httpServer)
-io.listen(httpServer)
-    // .listen(httpServer);
+
+if(process.env.NODE_ENV === "production")  {
+    const express = require('express')
+    const app = express()
+    app.use('/', express.static(path.join(__dirname, 'client', 'build' )))
+    app.get('*', (req,res) => {
+        const index = path.join(__dirname, 'client', 'build', 'index.html');
+        res.sendFile(index);
+    })
+}
+const io = require('socket.io')();
+
 io.on('connection', (client) => {
-    client.on('subscribeToChat', (interval) => {
+    client.on('subscribeToTimer', (interval) => {
         console.log('client is subscribing to timer with interval ', interval);
         setInterval(() => {
             client.emit('chat', chat);
         }, interval);
     });
 });
-// let cors = require('cors')
-// app.use(express.json()) // Без этих  строк сервер не видит req.body
-app.listen( 5000, () => console.log(`App has been started on port 5000`))
-    .on("error", (err) => console.log(err))
-
-app.use('/', express.static(path.join(__dirname, 'client', 'build' )))
-app.get('*', (req,res) => {
-    console.log("Homepage")
-    const index = path.join(__dirname, 'client', 'build', 'index.html');
-    res.sendFile(index);
-})
-
-
-
-if(process.env.NODE_ENV === "production")  {
-
-    // app.use(cors())
-
-}
-
+const port = 8000;
+io.listen(port);
+console.log('listening on port ', port);
 //Commands Handling
 client.on('chat', async (channel, userstate, message, self) => {
+    console.log(userstate)
     if (self) return;
     handlers.basicCommandsHandler.handleCommand(message, channel, userstate).then(res => {
             if (res) {
-                console.log(userstate)
+                // console.log(res)
                 chat.push({
                     channel: channel,
-                    userstate: {username: "advicerfromchat" , color: "gold"},
+                    username: "advicerfromchat",
+                    id: null, // BOts id? i dont know,
                     message: res,
                     time: Date.now()
                 })
@@ -75,7 +65,8 @@ client.on('chat', async (channel, userstate, message, self) => {
             console.log(res)
             chat.push({
                 channel: channel,
-                userstate: {username: "advicerfromchat" , color: "gold"},
+                username: "advicerfromchat",
+                id: null, // BOts id? i dont know,
                 message: res,
                 time: Date.now()
             })
@@ -90,7 +81,8 @@ client.on('chat', async (channel, userstate, message, self) => {
     if(self) return
     chat.push({
         channel: channel,
-        userstate,
+        username: userstate.username,
+        id: userstate.id,
         message: message,
         time: Date.now()
     })
