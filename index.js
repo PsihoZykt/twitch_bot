@@ -7,39 +7,40 @@ const client = new tmi.client(options);
 client.connect().catch(console.error);
 
 if(process.env.NODE_ENV === "production")  {
+    const path = require('path')
     const express = require('express')
     const app = express()
-    const path = require('path')
+    app.use(express.json()) // Без этих  строк сервер не видит req.body
     app.use('/', express.static(path.join(__dirname, 'client', 'build' )))
     app.get('*', (req,res) => {
         const index = path.join(__dirname, 'client', 'build', 'index.html');
         res.sendFile(index);
     })
+    app.listen(process.env.PORT || 5000, () => console.log(`App has been started on port 5000`))
+        .on("error", (err) => console.log(err))
 }
 const io = require('socket.io')();
 
 io.on('connection', (client) => {
-    client.on('subscribeToTimer', (interval) => {
+    client.on('subscribeToChat', (interval) => {
         console.log('client is subscribing to timer with interval ', interval);
         setInterval(() => {
             client.emit('chat', chat);
         }, interval);
     });
 });
-const port = 8000;
+const port =  8000
 io.listen(port);
 console.log('listening on port ', port);
 //Commands Handling
 client.on('chat', async (channel, userstate, message, self) => {
-    console.log(userstate)
     if (self) return;
     handlers.basicCommandsHandler.handleCommand(message, channel, userstate).then(res => {
             if (res) {
-                // console.log(res)
+                console.log(userstate)
                 chat.push({
                     channel: channel,
-                    username: "advicerfromchat",
-                    id: null, // BOts id? i dont know,
+                    userstate: {username: "advicerfromchat" , color: "gold"},
                     message: res,
                     time: Date.now()
                 })
@@ -66,8 +67,7 @@ client.on('chat', async (channel, userstate, message, self) => {
             console.log(res)
             chat.push({
                 channel: channel,
-                username: "advicerfromchat",
-                id: null, // BOts id? i dont know,
+                userstate: {username: "advicerfromchat" , color: "gold"},
                 message: res,
                 time: Date.now()
             })
@@ -82,8 +82,7 @@ client.on('chat', async (channel, userstate, message, self) => {
     if(self) return
     chat.push({
         channel: channel,
-        username: userstate.username,
-        id: userstate.id,
+        userstate,
         message: message,
         time: Date.now()
     })
