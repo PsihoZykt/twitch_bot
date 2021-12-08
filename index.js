@@ -11,7 +11,6 @@ if(process.env.NODE_ENV === "production")  {
     const express = require('express')
     const app = express()
     let cors = require('cors')
-    const httpServer = require("http").createServer();
     app.use(cors())
     app.use(express.json()) // Без этих  строк сервер не видит req.body
 
@@ -28,6 +27,8 @@ if(process.env.NODE_ENV === "production")  {
     app.listen(process.env.PORT || 5000, () => console.log(`App has been started on port 5000`))
         .on("error", (err) => console.log(err))
 }
+const httpServer = require("http").createServer();
+
 const io = require('socket.io')(httpServer, {  cors: {    origin: "https://lit-citadel-01156.herokuapp.com:8000/",    methods: ["GET", "POST"],        credentials: true  }});
 
 io.on('connection', (client) => {
