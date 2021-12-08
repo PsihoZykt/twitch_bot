@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 // const socket = openSocket('localhost:8000/');
 const localhost = "localhost"
 const heroku = "https://lit-citadel-01156.herokuapp.com"
-const socket = openSocket(`${heroku}:8000`);
+const socket = openSocket(`${heroku}:${process.env.PORT}`);
 
     function subscribeToChat(cb) {
 
