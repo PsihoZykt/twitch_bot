@@ -10,9 +10,16 @@ if(process.env.NODE_ENV === "production")  {
     const path = require('path')
     const express = require('express')
     const app = express()
+    let cors = require('cors')
     app.use(express.json()) // Без этих  строк сервер не видит req.body
+
+    let corsOptions = {
+        origin: 'https://lit-citadel-01156.herokuapp.com',
+        optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+    }
+
     app.use('/', express.static(path.join(__dirname, 'client', 'build' )))
-    app.get('*', (req,res) => {
+    app.get('*', cors(corsOptions), (req,res) => {
         const index = path.join(__dirname, 'client', 'build', 'index.html');
         res.sendFile(index);
     })
