@@ -14,7 +14,7 @@ if(process.env.NODE_ENV === "production")  {
     app.use(express.json()) // Без этих  строк сервер не видит req.body
 
     let corsOptions = {
-        origin: 'https://lit-citadel-01156.herokuapp.com',
+        origin: 'https://lit-citadel-01156.herokuapp.com:8000/',
         optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
     }
 
