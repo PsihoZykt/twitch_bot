@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 const localhost = "localhost"
 const heroku = "https://lit-citadel-01156.herokuapp.com"
 const socket = io(`${heroku}:${process.env.PORT}`
+// const socket = io(`${localhost}:${5000}`
     // ,
     // {  transports: ['websocket']}
 )

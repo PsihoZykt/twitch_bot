@@ -25,23 +25,28 @@ const io = new Server(server
 if(process.env.NODE_ENV === "production")  {
 
     // app.use(express.json()) // Без этих  строк сервер не видит req.body
-    app.use('/', express.static(path.join(__dirname, 'client', 'build' )))
-    app.get('/bot', (req,res) => {
-        const index = path.join(__dirname, 'client', 'build', 'index.html');
-        res.sendFile(index);
-    })
+    // app.use('/bot/', express.static(path.join(__dirname, 'client', 'build' )))
+    // app.get('/bot', (req,res) => {
+    //     const index = path.join(__dirname, 'client', 'build', 'index.html');
+    //     res.sendFile(index);
+    // })
+    app.use(express.static(path.join(__dirname, 'client',  'build')))
+    // app.get('/bot', (req,res) => {
+    //     res.sendFile(path.join(__dirname, "client", "public", "index.html"));
+    // })
     server.listen(process.env.PORT || 5000, () => console.log(`App has been started on port 5000`))
         .on("error", (err) => console.log(err))
+    io.on('connection', (client) => {
+        console.log('client is subscribing to timer with interval ');
+        client.on('subscribeToChat', (interval) => {
+            setInterval(() => {
+                client.emit('chat', chat);
+            }, interval);
+        });
+    });
 }
 
-io.on('connection', (client) => {
-    console.log('client is subscribing to timer with interval ');
-    client.on('subscribeToChat', (interval) => {
-        setInterval(() => {
-            client.emit('chat', chat);
-        }, interval);
-    });
-});
+
 // io.listen(server);
 //Commands Handling
 client.on('chat', async (channel, userstate, message, self) => {
