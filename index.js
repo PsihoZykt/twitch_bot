@@ -24,12 +24,12 @@ if(process.env.NODE_ENV === "production")  {
 }
 
 io.on('connection', (client) => {
-    client.on('subscribeToChat', (interval) => {
-        console.log('client is subscribing to timer with interval ', interval);
+    console.log('client is subscribing to timer with interval ');
+    // client.on('subscribeToChat', (interval) => {
         // setInterval(() => {
         //     client.emit('chat', chat);
         // }, interval);
-    });
+    // });
 });
 // io.listen(server);
 //Commands Handling
