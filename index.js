@@ -10,23 +10,26 @@ if(process.env.NODE_ENV === "production")  {
     const path = require('path')
     const express = require('express')
     const app = express()
+    app.use(express.json()) // Без этих  строк сервер не видит req.body
     app.use('/', express.static(path.join(__dirname, 'client', 'build' )))
     app.get('*', (req,res) => {
         const index = path.join(__dirname, 'client', 'build', 'index.html');
         res.sendFile(index);
     })
+    app.listen(process.env.PORT || 5000, () => console.log(`App has been started on port 5000`))
+        .on("error", (err) => console.log(err))
 }
 const io = require('socket.io')();
 
 io.on('connection', (client) => {
-    client.on('subscribeToTimer', (interval) => {
+    client.on('subscribeToChat', (interval) => {
         console.log('client is subscribing to timer with interval ', interval);
         setInterval(() => {
             client.emit('chat', chat);
         }, interval);
     });
 });
-const port = 8000;
+const port =  8000
 io.listen(port);
 console.log('listening on port ', port);
 //Commands Handling

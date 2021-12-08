@@ -1,18 +1,22 @@
 import openSocket from 'socket.io-client';
 import {useEffect, useState} from "react";
-const socket = openSocket('https://lit-citadel-01156.herokuapp.com:8000/');
+const socket = openSocket('localhost:8000/');
+// const socket = openSocket('https://lit-citadel-01156.herokuapp.com:8000/');
+
 function subscribeToChat(cb) {
   socket.on('chat', chat => cb(null, chat));
-  socket.emit('subscribeToTimer', 1000);
+  socket.emit('subscribeToChat', 1000);
 }
 function App() {
   let [chat, setChat] = useState([])
   useEffect(() => {
+    console.log("subscribe to chat")
     subscribeToChat((err, chat) => {
       setChat(chat)
     })
   }, [])
 return <div>
+  Chat
   {chat.map(el => {
  return <Message el={el} />
   } )}
