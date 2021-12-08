@@ -1,8 +1,7 @@
 import openSocket from 'socket.io-client';
 import {useEffect, useState} from "react";
 // const socket = openSocket('localhost:8000/');
-const socket = openSocket('https://lit-citadel-01156.herokuapp.com:8000/', {  withCredentials: true,
-  });
+const socket = openSocket('https://lit-citadel-01156.herokuapp.com:5000/');
 
 function subscribeToChat(cb) {
 
