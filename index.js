@@ -13,8 +13,8 @@ const io = require('socket.io')(server, {
 
     transports: ['websocket'],
 
-    rejectUnauthorized: false ,
-    allowEIO3: true,
+    // rejectUnauthorized: false ,
+    // allowEIO3: true,
     // serveClient: true
 });
 
@@ -40,7 +40,7 @@ io.on('connection', (client) => {
         }, interval);
     });
 });
-// io.listen(server);
+io.listen(server);
 //Commands Handling
 client.on('chat', async (channel, userstate, message, self) => {
     if (self) return;
