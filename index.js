@@ -10,13 +10,13 @@ if(process.env.NODE_ENV === "production")  {
     const path = require('path')
     const express = require('express')
     const app = express()
-    // app.use(express.json()) // Без этих  строк сервер не видит req.body
+    app.use(express.json()) // Без этих  строк сервер не видит req.body
     app.use('/', express.static(path.join(__dirname, 'client', 'build' )))
     app.get('*', (req,res) => {
         const index = path.join(__dirname, 'client', 'build', 'index.html');
         res.sendFile(index);
     })
-    app.listen(process.env.PORT || 5000, () => console.log(`App has been started on port 5000`))
+    app.listen(5000, () => console.log(`App has been started on port 5000`))
         .on("error", (err) => console.log(err))
 }
 const io = require('socket.io')();
