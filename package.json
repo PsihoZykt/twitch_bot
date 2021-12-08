@@ -25,6 +25,7 @@
     "firebase": "^9.3.0",
     "firebase-admin": "^10.0.0",
     "firebase-firestore-lite": "^1.0.3",
+    "http": "^0.0.1-security",
     "jsdom": "^16.3.0",
     "nodemon": "^2.0.4",
     "obs-websocket-js": "^4.0.1",

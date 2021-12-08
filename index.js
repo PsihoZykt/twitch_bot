@@ -11,6 +11,7 @@ if(process.env.NODE_ENV === "production")  {
     const express = require('express')
     const app = express()
     let cors = require('cors')
+    const httpServer = require("http").createServer();
     app.use(cors())
     app.use(express.json()) // Без этих  строк сервер не видит req.body
 
