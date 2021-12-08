@@ -9,26 +9,8 @@ const path = require('path')
 const app = express()
 let cors = require('cors')
 const httpServer = require("http").createServer(app);
-
-if(process.env.NODE_ENV === "production")  {
-
-    app.use(cors())
-    app.use(express.json()) // Без этих  строк сервер не видит req.body
-
-    // let corsOptions = {
-    //     origin: 'https://lit-citadel-01156.herokuapp.com:8000/',
-    //     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-    // }
-
-    app.use('/', express.static(path.join(__dirname, 'client', 'build' )))
-    app.get('*', (req,res) => {
-        const index = path.join(__dirname, 'client', 'build', 'index.html');
-        res.sendFile(index);
-    })
-    httpServer.listen( 5000, () => console.log(`App has been started on port 5000`))
-        .on("error", (err) => console.log(err))
-}
-const io = require('socket.io')(httpServer, {  cors: {    origin: "*",    methods: ["GET", "POST"]}});
+const io = require('socket.io')(httpServer, {  cors: {    origin: "*"}});
+io.listen(httpServer);
 
 io.on('connection', (client) => {
     client.on('subscribeToChat', (interval) => {
@@ -38,7 +20,20 @@ io.on('connection', (client) => {
         }, interval);
     });
 });
-io.listen(httpServer);
+if(process.env.NODE_ENV === "production")  {
+
+    app.use(cors())
+    app.use(express.json()) // Без этих  строк сервер не видит req.body
+
+    app.use('/', express.static(path.join(__dirname, 'client', 'build' )))
+    app.get('*', (req,res) => {
+        const index = path.join(__dirname, 'client', 'build', 'index.html');
+        res.sendFile(index);
+    })
+    httpServer.listen( 5000, () => console.log(`App has been started on port 5000`))
+        .on("error", (err) => console.log(err))
+}
+
 //Commands Handling
 client.on('chat', async (channel, userstate, message, self) => {
     if (self) return;
