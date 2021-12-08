@@ -20,7 +20,7 @@ if(process.env.NODE_ENV === "production")  {
     server.listen(process.env.PORT || 5000, () => console.log(`App has been started on port 5000`))
         .on("error", (err) => console.log(err))
 }
-const io = require('socket.io')();
+const io = require('socket.io')(server);
 
 io.on('connection', (client) => {
     client.on('subscribeToChat', (interval) => {
