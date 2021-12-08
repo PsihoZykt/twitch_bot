@@ -7,22 +7,9 @@ const client = new tmi.client(options);
 client.connect().catch(console.error);
 const path = require('path')
 const app = express()
-
-// let cors = require('cors')
-app.use(express.json()) // Без этих  строк сервер не видит req.body
-
-app.use('/', express.static(path.join(__dirname, 'client', 'build' )))
-app.get('*', (req,res) => {
-    const index = path.join(__dirname, 'client', 'build', 'index.html');
-    res.sendFile(index);
-})
 const httpServer = require("http").createServer(app);
-const io = require('socket.io')(httpServer, {  cors: {    origin: "*"}});
-io.listen(httpServer);
-
-httpServer.listen( 5000, () => console.log(`App has been started on port 5000`))
-    .on("error", (err) => console.log(err))
-
+const io = require('socket.io')(httpServer, {  cors: {    origin: "*"}})
+    .listen(httpServer);
 io.on('connection', (client) => {
     client.on('subscribeToChat', (interval) => {
         console.log('client is subscribing to timer with interval ', interval);
@@ -31,6 +18,19 @@ io.on('connection', (client) => {
         }, interval);
     });
 });
+// let cors = require('cors')
+app.use(express.json()) // Без этих  строк сервер не видит req.body
+httpServer.listen( 5000, () => console.log(`App has been started on port 5000`))
+    .on("error", (err) => console.log(err))
+
+app.use('/', express.static(path.join(__dirname, 'client', 'build' )))
+app.get('*', (req,res) => {
+    const index = path.join(__dirname, 'client', 'build', 'index.html');
+    res.sendFile(index);
+})
+
+
+
 if(process.env.NODE_ENV === "production")  {
 
     // app.use(cors())
