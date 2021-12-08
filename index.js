@@ -10,9 +10,9 @@ const http = require("http")
 const app = express()
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
-
-    transports: ['websocket'],
-
+ cors: {
+     transports: ['websocket'],
+ },
     rejectUnauthorized: false ,
     allowEIO3: true,
     // serveClient: true
