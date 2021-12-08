@@ -26,7 +26,7 @@ if(process.env.NODE_ENV === "production")  {
 
     // app.use(express.json()) // Без этих  строк сервер не видит req.body
     // app.use('/', express.static(path.join(__dirname, 'client', 'build' )))
-    app.get('*', (req,res) => {
+    app.get('/', (req,res) => {
         const index = path.join(__dirname, 'client', 'build', 'index.html');
         res.sendFile(index);
     })
