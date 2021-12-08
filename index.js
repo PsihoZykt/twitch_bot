@@ -7,9 +7,11 @@ const client = new tmi.client(options);
 client.connect().catch(console.error);
 const path = require('path')
 const http = require("http")
+const { Server } = require("socket.io");
 const app = express()
 const server = http.createServer(app);
-const io = require('socket.io')(server, {
+
+const io = new Server(server, {
  cors: {
      transports: ['websocket'],
  },
