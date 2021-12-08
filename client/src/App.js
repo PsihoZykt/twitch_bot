@@ -4,7 +4,11 @@ import {useEffect, useState} from "react";
 const socket = openSocket('https://lit-citadel-01156.herokuapp.com:8000/');
 
 function subscribeToChat(cb) {
-  socket.on('chat', chat => cb(null, chat));
+
+  socket.on('chat', chat => {
+    console.log("receive chat" , chat)
+    cb(null, chat)
+  });
   socket.emit('subscribeToChat', 1000);
 }
 function App() {
