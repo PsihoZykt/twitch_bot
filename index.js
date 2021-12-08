@@ -15,7 +15,7 @@ const io = require('socket.io')(server, {
 
     rejectUnauthorized: false ,
     allowEIO3: true,
-    serveClient: true
+    // serveClient: true
 });
 
 if(process.env.NODE_ENV === "production")  {
