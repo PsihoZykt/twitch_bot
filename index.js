@@ -8,7 +8,9 @@ client.connect().catch(console.error);
 const path = require('path')
 const app = express()
 const httpServer = require("http").createServer(app);
-const io = require('socket.io')(httpServer, {  cors: {    origin: "*"}})
+// const io = require('socket.io')(httpServer, {  cors: {    origin: "*"}})
+const io = require('socket.io')(httpServer)
+io.listen(httpServer)
     // .listen(httpServer);
 io.on('connection', (client) => {
     client.on('subscribeToChat', (interval) => {
@@ -25,6 +27,7 @@ httpServer.listen( 5000, () => console.log(`App has been started on port 5000`))
 
 app.use('/', express.static(path.join(__dirname, 'client', 'build' )))
 app.get('*', (req,res) => {
+    console.log("Homepage")
     const index = path.join(__dirname, 'client', 'build', 'index.html');
     res.sendFile(index);
 })
