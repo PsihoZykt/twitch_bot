@@ -8,6 +8,8 @@ client.connect().catch(console.error);
 const path = require('path')
 const app = express()
 let cors = require('cors')
+const httpServer = require("http").createServer(app);
+
 if(process.env.NODE_ENV === "production")  {
 
     app.use(cors())
@@ -23,11 +25,10 @@ if(process.env.NODE_ENV === "production")  {
         const index = path.join(__dirname, 'client', 'build', 'index.html');
         res.sendFile(index);
     })
-    app.listen(process.env.PORT || 5000, () => console.log(`App has been started on port 5000`))
+    httpServer.listen(process.env.PORT || 5000, () => console.log(`App has been started on port 5000`))
         .on("error", (err) => console.log(err))
 }
-
-const io = require('socket.io')(app, {  cors: {    origin: "https://lit-citadel-01156.herokuapp.com:8000/",    methods: ["GET", "POST"],        credentials: true  }});
+const io = require('socket.io')(httpServer, {  cors: {    origin: "https://lit-citadel-01156.herokuapp.com:8000/",    methods: ["GET", "POST"],        credentials: true  }});
 
 io.on('connection', (client) => {
     client.on('subscribeToChat', (interval) => {
