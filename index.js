@@ -31,9 +31,7 @@ io.on('connection', (client) => {
         }, interval);
     });
 });
-const port =  8000
-io.listen(port);
-console.log('listening on port ', port);
+io.listen(server);
 //Commands Handling
 client.on('chat', async (channel, userstate, message, self) => {
     if (self) return;
