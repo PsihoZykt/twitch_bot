@@ -11,14 +11,16 @@ const { Server } = require("socket.io");
 const app = express()
 const server = http.createServer(app);
 
-const io = new Server(server, {
- cors: {
-     transports: ['websocket'],
- },
-    rejectUnauthorized: false ,
-    allowEIO3: true,
-    // serveClient: true
-});
+const io = new Server(server
+ //    , {
+ // cors: {
+ //     transports: ['websocket'],
+ // },
+ //    rejectUnauthorized: false ,
+ //    allowEIO3: true,
+ //    // serveClient: true
+// }
+);
 
 if(process.env.NODE_ENV === "production")  {
 
