@@ -9,6 +9,8 @@ const path = require('path')
 const http = require("http")
 const app = express()
 const server = http.createServer(app);
+const io = require('socket.io')(server);
+
 if(process.env.NODE_ENV === "production")  {
 
     // app.use(express.json()) // Без этих  строк сервер не видит req.body
@@ -20,14 +22,13 @@ if(process.env.NODE_ENV === "production")  {
     server.listen(process.env.PORT || 5000, () => console.log(`App has been started on port 5000`))
         .on("error", (err) => console.log(err))
 }
-const io = require('socket.io')(server);
 
 io.on('connection', (client) => {
     client.on('subscribeToChat', (interval) => {
         console.log('client is subscribing to timer with interval ', interval);
-        setInterval(() => {
-            client.emit('chat', chat);
-        }, interval);
+        // setInterval(() => {
+        //     client.emit('chat', chat);
+        // }, interval);
     });
 });
 // io.listen(server);
