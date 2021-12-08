@@ -22,10 +22,10 @@ const options = {
         "ariywariy",
         "borodatiyky",
         "hotmandogy",
-    //     "7magmaker7",
-    //
+        "7magmaker7",
+
         "estelitaaa"
-    //
+
 
     ],
 };

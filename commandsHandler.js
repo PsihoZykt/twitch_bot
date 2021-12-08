@@ -37,7 +37,6 @@ let handlers = {
             const command = new Command(parseMessage(message))
             let commandType = command.type
             // Privelegues commands
-            console.log(userstate)
             if (commandType) {
                 if (userstate.mod || userstate.username === "psihoz_ykt" || userstate.username === channel.slice(1) ) {
                     switch (commandType) {

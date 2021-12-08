@@ -1,15 +1,47 @@
 const tmi = require('tmi.js');
 const handlers = require('./commandsHandler')
 let options = require('./bot_options')
+const express = require("express");
 let chat = [];
 const client = new tmi.client(options);
 client.connect().catch(console.error);
 
+if(process.env.NODE_ENV === "production")  {
+    const express = require('express')
+    const app = express()
+    app.use('/', express.static(path.join(__dirname, 'client', 'build' )))
+    app.get('*', (req,res) => {
+        const index = path.join(__dirname, 'client', 'build', 'index.html');
+        res.sendFile(index);
+    })
+}
+const io = require('socket.io')();
+
+io.on('connection', (client) => {
+    client.on('subscribeToTimer', (interval) => {
+        console.log('client is subscribing to timer with interval ', interval);
+        setInterval(() => {
+            client.emit('chat', chat);
+        }, interval);
+    });
+});
+const port = 8000;
+io.listen(port);
+console.log('listening on port ', port);
 //Commands Handling
 client.on('chat', async (channel, userstate, message, self) => {
     if (self) return;
     handlers.basicCommandsHandler.handleCommand(message, channel, userstate).then(res => {
-            if (res) client.action(channel, res);
+            if (res) {
+                console.log(userstate)
+                chat.push({
+                    channel: channel,
+                    userstate: {username: "advicerfromchat" , color: "gold"},
+                    message: res,
+                    time: Date.now()
+                })
+                client.action(channel, res);
+            }
         })
 
 });
@@ -27,18 +59,26 @@ client.on('chat', async (channel, userstate, message, self) => {
     if (self) return;
 
     await handlers.heroesCommandsHandler.handleCommand(message, channel, userstate).then(res => {
-        if (res) client.action(channel, res)
+        if (res) {
+            console.log(res)
+            chat.push({
+                channel: channel,
+                userstate: {username: "advicerfromchat" , color: "gold"},
+                message: res,
+                time: Date.now()
+            })
+            client.action(channel, res)
+        }
 
     });
 
 });
 // Chat array handler
 client.on('chat', async (channel, userstate, message, self) => {
-    if (self) return;
+    if(self) return
     chat.push({
         channel: channel,
-        username: userstate.username,
-        id: userstate.id,
+        userstate,
         message: message,
         time: Date.now()
     })
