@@ -5,13 +5,13 @@ const express = require("express");
 let chat = [];
 const client = new tmi.client(options);
 client.connect().catch(console.error);
-
+const path = require('path')
+const express = require('express')
+const http = require("http")
+const app = express()
+const server = http.createServer(app);
 if(process.env.NODE_ENV === "production")  {
-    const path = require('path')
-    const express = require('express')
-    const http = require("http")
-    const app = express()
-    const server = http.createServer(app);
+
     // app.use(express.json()) // Без этих  строк сервер не видит req.body
     app.use('/', express.static(path.join(__dirname, 'client', 'build' )))
     app.get('*', (req,res) => {
