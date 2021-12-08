@@ -22,7 +22,7 @@ io.on('connection', (client) => {
 });
 // let cors = require('cors')
 // app.use(express.json()) // Без этих  строк сервер не видит req.body
-httpServer.listen( 5000, () => console.log(`App has been started on port 5000`))
+app.listen( 5000, () => console.log(`App has been started on port 5000`))
     .on("error", (err) => console.log(err))
 
 app.use('/', express.static(path.join(__dirname, 'client', 'build' )))
