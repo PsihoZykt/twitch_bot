@@ -9,7 +9,7 @@ const path = require('path')
 const http = require("http")
 const app = express()
 const server = http.createServer(app);
-const io = require('socket.io')();
+const io = require('socket.io')(server);
 
 if(process.env.NODE_ENV === "production")  {
 
