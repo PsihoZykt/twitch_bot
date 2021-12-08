@@ -18,7 +18,7 @@ const io = new Server(server
  // },
  //    rejectUnauthorized: false ,
  //    allowEIO3: true,
-    serveClient: true
+ //    serveClient: true
 }
 );
 
@@ -26,21 +26,21 @@ if(process.env.NODE_ENV === "production")  {
 
     // app.use(express.json()) // Без этих  строк сервер не видит req.body
     app.use('/', express.static(path.join(__dirname, 'client', 'build' )))
-    app.get('/', (req,res) => {
+    app.get('/bot', (req,res) => {
         const index = path.join(__dirname, 'client', 'build', 'index.html');
         res.sendFile(index);
     })
-    server.listen(process.env.PORT , () => console.log(`App has been started on port 5000`))
+    server.listen(process.env.PORT || 5000, () => console.log(`App has been started on port 5000`))
         .on("error", (err) => console.log(err))
 }
 
 io.on('connection', (client) => {
     console.log('client is subscribing to timer with interval ');
-    // client.on('subscribeToChat', (interval) => {
-    //     setInterval(() => {
-    //         client.emit('chat', chat);
-    //     }, interval);
-    // });
+    client.on('subscribeToChat', (interval) => {
+        setInterval(() => {
+            client.emit('chat', chat);
+        }, interval);
+    });
 });
 // io.listen(server);
 //Commands Handling
