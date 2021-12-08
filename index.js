@@ -6,10 +6,10 @@ let chat = [];
 const client = new tmi.client(options);
 client.connect().catch(console.error);
 const path = require('path')
-const http = require("http")
+const { createServer } = require("http");
 const { Server } = require("socket.io");
 const app = express()
-const server = http.createServer(app);
+const server = createServer(app);
 
 const io = new Server(server
  //    , {
@@ -44,7 +44,7 @@ io.on('connection', (client) => {
         }, interval);
     });
 });
-io.listen(server);
+// io.listen(server);
 //Commands Handling
 client.on('chat', async (channel, userstate, message, self) => {
     if (self) return;
