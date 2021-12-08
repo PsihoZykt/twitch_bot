@@ -10,7 +10,7 @@ if(process.env.NODE_ENV === "production")  {
     const path = require('path')
     const express = require('express')
     const app = express()
-    app.use(express.json()) // Без этих  строк сервер не видит req.body
+    // app.use(express.json()) // Без этих  строк сервер не видит req.body
     app.use('/', express.static(path.join(__dirname, 'client', 'build' )))
     app.get('*', (req,res) => {
         const index = path.join(__dirname, 'client', 'build', 'index.html');
