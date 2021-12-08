@@ -11,7 +11,7 @@ const app = express()
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
 
-    transports: ['websocket', 'polling'],
+    // transports: ['websocket', 'polling'],
 
     rejectUnauthorized: false ,
     allowEIO3: true,
@@ -29,7 +29,9 @@ if(process.env.NODE_ENV === "production")  {
     server.listen(process.env.PORT , () => console.log(`App has been started on port 5000`))
         .on("error", (err) => console.log(err))
 }
-
+io.engine.on("connection_error", (err) => {
+    console.log(err);
+});
 io.on('connection', (client) => {
     console.log('client is subscribing to timer with interval ');
     client.on('subscribeToChat', (interval) => {

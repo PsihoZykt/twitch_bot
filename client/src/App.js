@@ -3,8 +3,9 @@ import {useEffect, useState} from "react";
 // const socket = openSocket('localhost:8000/');
 const localhost = "localhost"
 const heroku = "https://lit-citadel-01156.herokuapp.com"
-const socket = openSocket(`${heroku}:${process.env.PORT}` , {  transports: ['websocket', 'polling'],
-});
+const socket = openSocket(`${heroku}:${process.env.PORT}`
+    // {  transports: ['websocket', 'polling'],
+);
 
     function subscribeToChat(cb) {
   socket.on('chat', chat => {
