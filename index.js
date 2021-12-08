@@ -9,7 +9,7 @@ const path = require('path')
 const http = require("http")
 const app = express()
 const server = http.createServer(app);
-const io = require('socket.io')(server, {rejectUnauthorized: false });
+const io = require('socket.io')(server, {transports: ['websocket'], rejectUnauthorized: false });
 
 if(process.env.NODE_ENV === "production")  {
 
@@ -25,11 +25,11 @@ if(process.env.NODE_ENV === "production")  {
 
 io.on('connection', (client) => {
     console.log('client is subscribing to timer with interval ');
-    // client.on('subscribeToChat', (interval) => {
-        // setInterval(() => {
-        //     client.emit('chat', chat);
-        // }, interval);
-    // });
+    client.on('subscribeToChat', (interval) => {
+        setInterval(() => {
+            client.emit('chat', chat);
+        }, interval);
+    });
 });
 io.listen(server);
 //Commands Handling
