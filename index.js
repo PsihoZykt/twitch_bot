@@ -11,7 +11,6 @@ const app = express()
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
     cors: {
-        origin: "https://lit-citadel-01156.herokuapp.com",
         methods: ["GET", "POST"],
         transports: ['websocket', 'polling'],
         credentials: true
