@@ -73,12 +73,7 @@ client.on('chat', async (channel, userstate, message, self) => {
 // Chat array handler
 client.on('chat', async (channel, userstate, message, self) => {
     if(self) return
-    chat.push({
-        channel: channel,
-        userstate,
-        message: message,
-        time: Date.now()
-    })
+    addToChat({message, channel, userstate})
 });
 // Anti-bot\spam\moderating system
 client.on('chat', async (channel, userstate, message, self) => {
