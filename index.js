@@ -12,7 +12,15 @@ const app = express()
 const server = createServer(app);
 
 const io = new Server(server);
-
+let addToChat = ({channel, userstate = {username: "advicerfromchat" , color: "gold"}, message}) => {
+    chat.push({
+        channel,
+        userstate,
+        message,
+        time: Date.now()
+    })
+    client.emit(chat, chat)
+}
 if(process.env.NODE_ENV === "production")  {
     app.use(express.static(path.join(__dirname, 'client',  'build')))
     server.listen(process.env.PORT || 5000, () => console.log(`App has been started on port 5000`))
@@ -33,13 +41,8 @@ client.on('chat', async (channel, userstate, message, self) => {
     if (self) return;
     handlers.basicCommandsHandler.handleCommand(message, channel, userstate).then(res => {
             if (res) {
-                console.log(userstate)
-                chat.push({
-                    channel: channel,
-                    userstate: {username: "advicerfromchat" , color: "gold"},
-                    message: res,
-                    time: Date.now()
-                })
+                    addToChat({channel,  message})
+
                 client.action(channel, res);
             }
         })
@@ -60,13 +63,7 @@ client.on('chat', async (channel, userstate, message, self) => {
 
     await handlers.heroesCommandsHandler.handleCommand(message, channel, userstate).then(res => {
         if (res) {
-            console.log(res)
-            chat.push({
-                channel: channel,
-                userstate: {username: "advicerfromchat" , color: "gold"},
-                message: res,
-                time: Date.now()
-            })
+           addToChat({message, channel, userstate})
             client.action(channel, res)
         }
 
