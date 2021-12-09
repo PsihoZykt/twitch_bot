@@ -46,7 +46,19 @@ if(process.env.NODE_ENV === "production")  {
     });
 }
 
+function sendHeartbeat(){
+    setTimeout(sendHeartbeat, 8000);
+    io.sockets.emit('ping', { beat : 1 });
+}
 
+io.sockets.on('connection', function (socket) {
+    socket.on('pong', function(data){
+        console.log("Pong received from client");
+    })
+})
+
+
+setTimeout(sendHeartbeat, 8000);
 // io.listen(server);
 //Commands Handling
 client.on('chat', async (channel, userstate, message, self) => {

@@ -8,7 +8,9 @@ const socket = io(`${heroku}:${process.env.PORT}`
     // ,
     // {  transports: ['websocket']}
 )
-
+socket.on('ping', function(data){
+  socket.emit('pong', {beat: 1});
+});
     function subscribeToChat(cb) {
   socket.on('chat', chat => {
     console.log("receive chat" , chat)
@@ -17,6 +19,7 @@ const socket = io(`${heroku}:${process.env.PORT}`
   socket.emit('subscribeToChat', 1000);
 }
 function App() {
+      console.log(process.env.PORT)
   let [chat, setChat] = useState([])
   useEffect(() => {
     console.log("subscribe to chat")
