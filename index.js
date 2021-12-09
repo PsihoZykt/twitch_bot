@@ -14,7 +14,6 @@ const server = createServer(app);
 const io = new Server(server);
 
 if(process.env.NODE_ENV === "production")  {
-
     app.use(express.static(path.join(__dirname, 'client',  'build')))
     server.listen(process.env.PORT || 5000, () => console.log(`App has been started on port 5000`))
         .on("error", (err) => console.log(err))
