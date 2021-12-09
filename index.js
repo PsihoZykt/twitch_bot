@@ -11,29 +11,11 @@ const { Server } = require("socket.io");
 const app = express()
 const server = createServer(app);
 
-const io = new Server(server
-    , {
- // cors: {
- //     transports: ['websocket', "polling"],
- // },
- //    rejectUnauthorized: false ,
- //    allowEIO3: true,
- //    serveClient: true
-}
-);
+const io = new Server(server);
 
 if(process.env.NODE_ENV === "production")  {
 
-    // app.use(express.json()) // Без этих  строк сервер не видит req.body
-    // app.use('/', express.static(path.join(__dirname, 'client', 'build' )))
-    // app.get('/bot', (req,res) => {
-    //     const index = path.join(__dirname, 'client', 'build', 'index.html');
-    //     res.sendFile(index);
-    // })
     app.use(express.static(path.join(__dirname, 'client',  'build')))
-    // app.get('/bot', (req,res) => {
-    //     res.sendFile(path.join(__dirname, "client", "public", "index.html"));
-    // })
     server.listen(process.env.PORT || 5000, () => console.log(`App has been started on port 5000`))
         .on("error", (err) => console.log(err))
     io.on('connection', (client) => {
@@ -46,20 +28,7 @@ if(process.env.NODE_ENV === "production")  {
     });
 }
 
-function sendHeartbeat(){
-    setTimeout(sendHeartbeat, 8000);
-    io.sockets.emit('ping', { beat : 1 });
-}
 
-io.sockets.on('connection', function (socket) {
-    socket.on('pong', function(data){
-        console.log("Pong received from client");
-    })
-})
-
-
-setTimeout(sendHeartbeat, 8000);
-// io.listen(server);
 //Commands Handling
 client.on('chat', async (channel, userstate, message, self) => {
     if (self) return;

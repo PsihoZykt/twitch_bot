@@ -3,14 +3,9 @@ import {useEffect, useState} from "react";
 // const socket = openSocket('localhost:8000/');
 const localhost = "localhost"
 const heroku = "https://lit-citadel-01156.herokuapp.com"
-const socket = io(`${heroku}`
+const socket = io(`${heroku}` )
 // const socket = io(`${localhost}:${5000}`
-    // ,
-    // {  transports: ['websocket']}
-)
-socket.on('ping', function(data){
-  socket.emit('pong', {beat: 1});
-});
+
     function subscribeToChat(cb) {
   socket.on('chat', chat => {
     console.log("receive chat" , chat)
@@ -19,7 +14,6 @@ socket.on('ping', function(data){
   socket.emit('subscribeToChat', 1000);
 }
 function App() {
-      console.log(process.env.PORT)
   let [chat, setChat] = useState([])
   useEffect(() => {
     console.log("subscribe to chat")
