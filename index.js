@@ -63,7 +63,7 @@ client.on('chat', async (channel, userstate, message, self) => {
 
     await handlers.heroesCommandsHandler.handleCommand(message, channel, userstate).then(res => {
         if (res) {
-           addToChat({message, channel, userstate})
+           addToChat({message, channel })
             client.action(channel, res)
         }
 
