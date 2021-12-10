@@ -6,46 +6,42 @@ let chat = [];
 const client = new tmi.client(options);
 client.connect().catch(console.error);
 const path = require('path')
-const { createServer } = require("http");
-const { Server } = require("socket.io");
+const {createServer} = require("http");
+const {Server} = require("socket.io");
 const app = express()
 const server = createServer(app);
 
 const io = new Server(server);
-let addToChat = ({channel, userstate = {username: "advicerfromchat" , color: "gold"}, message}) => {
+
+let addToChat = ({channel, userstate = {username: "advicerfromchat", color: "gold"}, message}) => {
     chat.push({
         channel,
         userstate,
         message,
         time: Date.now()
     })
-    client.emit(chat, chat)
+    io.emit("chat", chat)
 }
-if(process.env.NODE_ENV === "production")  {
-    app.use(express.static(path.join(__dirname, 'client',  'build')))
-    server.listen(process.env.PORT || 5000, () => console.log(`App has been started on port 5000`))
-        .on("error", (err) => console.log(err))
-    io.on('connection', (client) => {
-        console.log('client is subscribing to timer with interval ');
-        client.on('subscribeToChat', (interval) => {
-            setInterval(() => {
-                client.emit('chat', chat);
-            }, interval);
-        });
-    });
-}
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, 'client', 'build')))
 
+}
+let port = process.env.PORT || 5000;
+server.listen(port, () => console.log(`App has been started on port ${port}`))
+    .on("error", (err) => console.log(err))
 
 //Commands Handling
 client.on('chat', async (channel, userstate, message, self) => {
     if (self) return;
-    handlers.basicCommandsHandler.handleCommand(message, channel, userstate).then(res => {
-            if (res) {
-                    addToChat({channel,  message})
-
-                client.action(channel, res);
-            }
-        })
+    await handlers.basicCommandsHandler.handleCommand(message, channel, userstate).then(res => {
+        if (res) {
+            addToChat({channel, message: res})
+            client.action(channel, res);
+        } else {
+            //Chat array handler
+            addToChat({message, channel, userstate})
+        }
+    })
 
 });
 //Hota lobby commands Handling
@@ -57,24 +53,6 @@ client.on('chat', async (channel, userstate, message, self) => {
 
 });
 
-//Handles commands which are in the files ( creatures, spells for heroes etc)
-client.on('chat', async (channel, userstate, message, self) => {
-    if (self) return;
-
-    await handlers.heroesCommandsHandler.handleCommand(message, channel, userstate).then(res => {
-        if (res) {
-           addToChat({message, channel })
-            client.action(channel, res)
-        }
-
-    });
-
-});
-// Chat array handler
-client.on('chat', async (channel, userstate, message, self) => {
-    if(self) return
-    addToChat({message, channel, userstate})
-});
 // Anti-bot\spam\moderating system
 client.on('chat', async (channel, userstate, message, self) => {
     if (self) return;

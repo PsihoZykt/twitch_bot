@@ -34,31 +34,44 @@ let handlers = {
     },
     basicCommandsHandler: {
         async handleCommand(message, channel, userstate) {
+            //TODO: migrate heroes comands to firebase
             const command = new Command(parseMessage(message))
-            let commandType = command.type
-            // Privelegues commands
-            if (commandType) {
-                if (userstate.mod || userstate.username === "psihoz_ykt" || userstate.username === channel.slice(1) ) {
-                    switch (commandType) {
-                        case("!add"):
-                            return this.addCommand(channel, command);
-                        case("!setHeroes"):
-                            return this.setHeroesMode(channel, command);
-                        case("!change"):
-                            return this.changeCommand(channel, command)
-                        case("!delete"):
-                            return this.deleteCommand(channel, command);
-                        case("!commands"):
-                            return this.getAllCommands(channel);
-                        default: {
-                            return this.getCommand(channel, command)
 
-                        }
-                    }
+            let heroesMode = await this.getHeroesMode(channel, command)
 
-                } else {
-                    return this.getCommand(channel, command)
+            //if heroes mode enabled we loooking through files
+            if (heroesMode === "enable") {
+                let commandsFileHandler = require('./FileHandler')
+                commandsFileHandler.setFileName(channel);
+                if (commandsFileHandler.findCommandInFile(command.type)) {
+                    return this.findCommand(message);
                 }
+            }
+            // if heroes mode is disabled we looging for commands in firabse
+                let commandType = command.type
+                // Privelegues commands
+                if (commandType) {
+                    if (userstate.mod || userstate.username === "psihoz_ykt" || userstate.username === channel.slice(1)) {
+                        switch (commandType) {
+                            case("!add"):
+                                return this.addCommand(channel, command);
+                            case("!setHeroes"):
+                                return this.setHeroesMode(channel, command);
+                            case("!change"):
+                                return this.changeCommand(channel, command)
+                            case("!delete"):
+                                return this.deleteCommand(channel, command);
+                            case("!commands"):
+                                return this.getAllCommands(channel);
+                            default: {
+                                return this.getCommand(channel, command)
+
+                            }
+                        }
+
+                    } else {
+                        return this.getCommand(channel, command)
+                    }
             }
         },
 
@@ -82,6 +95,24 @@ let handlers = {
         },
         async setHeroesMode(channel, command) {
             await firebaseController.setHeroesMode(channel, command)
+        },
+        async getHeroesMode(channel, command) {
+            return await firebaseController.getHeroesMode(channel, command)
+        },
+        findCommand(message) {
+            var commandRe = /!([\wа-яА-Я]+)/g;
+
+            let commandName = commandRe.exec(message)[0];
+            let username = "";
+            var re = /@(\w+)/g;
+            let regResult = re.exec(message);
+
+            if (regResult !== null) {
+                username = regResult[0];
+            }
+
+            let command = commandsFileHandler.findCommandInFile(commandName);
+            return username + " " + command.text
         },
 
     },
@@ -112,7 +143,6 @@ let handlers = {
             let heroesMode = await this.getHeroesMode(channel, command)
             if (heroesMode === "enable") {
                 commandsFileHandler.setFileName(channel);
-
                 if (commandsFileHandler.findCommandInFile(command.type))
                     return this.findCommand(message);
             }
