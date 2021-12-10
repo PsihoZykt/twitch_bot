@@ -7,8 +7,8 @@ import ReactModal from 'react-modal';
 // const socket = openSocket('localhost:8000/');
 const localhost = "localhost"
 const heroku = "https://lit-citadel-01156.herokuapp.com"
-// const socket = io(`${heroku}` )
-const socket = io(`${localhost}:${5000}`)
+const socket = io(`${heroku}` )
+// const socket = io(`${localhost}:${5000}`)
 
 let ModalContent = (props) => {
 
