@@ -39,6 +39,7 @@ server.listen(port, () => console.log(`App has been started on port ${port}`))
 client.on('chat', async (channel, userstate, message, self) => {
     if (self) return;
     await handlers.basicCommandsHandler.handleCommand(message, channel, userstate).then(res => {
+        addToChat({channel, message, userstate})
         if (res) {
             addToChat({channel, message: res})
             client.action(channel, res);
