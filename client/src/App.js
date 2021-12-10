@@ -102,15 +102,16 @@ function App() {
     console.log("chatElement", chatElement)
 
     function subscribeToChat(cb) {
+        socket.emit('subscribeToChat', 1000);
+        socket.emit("get chat", null)
         socket.on('chat', chat => {
             console.log("receive chat", chat)
             cb(null, chat)
         });
-        socket.emit('subscribeToChat', 1000);
+
     }
 
     useEffect(() => {
-        console.log("subscribe to chat")
         subscribeToChat((err, chat) => {
             setChat(chat)
         })

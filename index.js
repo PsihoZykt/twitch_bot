@@ -12,6 +12,10 @@ const app = express()
 const server = createServer(app);
 
 const io = new Server(server);
+io.on("connection", () => {
+    console.log('connected')
+    io.emit("chat", chat)
+})
 
 let addToChat = ({channel, userstate = {username: "advicerfromchat", color: "gold"}, message}) => {
     chat.push({
@@ -26,6 +30,7 @@ if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, 'client', 'build')))
 
 }
+
 let port = process.env.PORT || 5000;
 server.listen(port, () => console.log(`App has been started on port ${port}`))
     .on("error", (err) => console.log(err))
