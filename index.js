@@ -45,6 +45,8 @@ client.on('chat', async (channel, userstate, message, self) => {
             addToChat({channel, message: res})
             client.action(channel, res);
         }
+    })
+
 });
 //Hota lobby commands Handling
 client.on('chat', async (channel, userstate, message, self) => {
