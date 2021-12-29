@@ -39,7 +39,7 @@ let handlers = {
 
             let heroesMode = await this.getHeroesMode(channel, command)
 
-            //if heroes mode enabled we loooking through files
+            //if heroes mode enabled we loooking through files, for enable type !heroesMode enable
             if (heroesMode === "enable") {
                 let commandsFileHandler = require('./FileHandler')
                 commandsFileHandler.setFileName(channel);
@@ -47,7 +47,7 @@ let handlers = {
                     return this.findCommand(message);
                 }
             }
-            // if heroes mode is disabled we looging for commands in firabse
+            // if heroes mode is disabled we're logging for commands in firebase
                 let commandType = command.type
                 // Privelegues commands
                 if (commandType) {

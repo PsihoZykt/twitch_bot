@@ -26,6 +26,7 @@ let addToChat = ({channel, userstate = {username: "advicerfromchat", color: "gol
     })
     io.emit("chat", chat)
 }
+// Enable front end
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, 'client', 'build')))
 
@@ -43,12 +44,7 @@ client.on('chat', async (channel, userstate, message, self) => {
         if (res) {
             addToChat({channel, message: res})
             client.action(channel, res);
-        } else {
-            //Chat array handler
-            addToChat({message, channel, userstate})
         }
-    })
-
 });
 //Hota lobby commands Handling
 client.on('chat', async (channel, userstate, message, self) => {
