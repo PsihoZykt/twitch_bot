@@ -88,4 +88,7 @@ Twitch bot for streamers ( mostly HOMM3 streamers )
 There is very simple front end for bot, it only displays chat from all channels where bot is working
 
 Link : [Frontend](https://lit-citadel-01156.herokuapp.com/)
+
+If you open the page and it has only white screen - it's ok, because it display messages which were written after you open this page ( so, if you want to see some messages in this screen, you need to write a message in one of the supported channels )
+
 At this moment it does nothing, but in future I want to make some moderating system with it ( because it's displays chat from different channels in one page, I think would be easier to moderate them ). 
